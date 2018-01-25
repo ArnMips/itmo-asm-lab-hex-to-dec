@@ -8,8 +8,8 @@ int main()
   char *format = malloc(sizeof(char) * 256);
   char *hex_number = malloc(sizeof(char) * 34);
                                  
-  snprintf(format, 256, "%s", "0+-");   //"<-+ 012><wight>"
-  snprintf(hex_number, 256, "%s", "ffffffffffffffffffffffffffffff21"); //<->
+  snprintf(format, 256, "%s", "0+-10");   //"<-+ 012><wight>"
+  snprintf(hex_number, 256, "%s", "00000000000000000000000000000021"); //<->
 
   print(out_buf, format, hex_number);
 
