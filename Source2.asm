@@ -2,8 +2,6 @@
 ;  This program                                 ;
 ;-----------------------------------------------;
 
-extern _printf
-
 section .data
   val_count:    dd 0     
   array_val:    times 4 dd 0
@@ -12,9 +10,9 @@ section .data
   wight:        dd 0            ; Ширина поля форматирования   
 
 section .text
-  global _test_asm
-  _test_asm:
-    pushad
+  global _print
+  _print:
+    pushad                ; Изменить!
     push  ebp
     push  esp     ; итого 40
 
@@ -340,6 +338,10 @@ nop
       jmp _loop_write_to_out_placeholder_1
     _no_flag_2: 
 
+nop
+nop
+nop
+
     ;;;; Установлен flag_3 -> '0' ?
     cmp byte [flags_arr+3], dl    
     jne _no_flag_3
@@ -355,6 +357,11 @@ nop
       _ok_2:  
       sub esi, [val_count]          ; Теперь в esi находится кол-во требующихся символов заполнителей '0' для печати перед числом 
 
+      cmp dh, 0                      ;Если значение не 0, то были установлены флаги установки символа перед числом
+      jz _no_eny_sign
+        inc esi
+      _no_eny_sign:
+
       ; Запишем заполнение
       _loop_write_to_out_placeholder_2:   
         mov bl, '0'                      
@@ -366,9 +373,9 @@ nop
       add esi, [val_count]              ; Запишем в esi общую длину символов числа для вывода
       ; Проверка на то, есть ли любой спец знак перед числом 
       cmp dh, 0                      ;Если значение не 0, то были установлены флаги установки символа перед числом
-      jz _no_eny_sign
-        ;dec esi
-      _no_eny_sign:
+      jz _no_eny_sign3
+        dec esi
+      _no_eny_sign3:
 
       ; Запишем число со знаком
       _loop_write_to_out_buf_2:   
